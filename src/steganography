@@ -1,0 +1,18 @@
+(* encoding the data into the image *)
+
+carrierImage = someimage; (*where someimage is an actual image *)
+carrierBytes = BitAnd[ImageData[carrierImage, "Byte"], 2^^11111110];
+mesg = "This is a secret message";
+secretBits = 
+  Flatten[IntegerDigits[ToCharacterCode[ToString[mesg, InputForm,
+      CharacterEncoding -> "ASCII"]], 2, 8]];
+img = Image[carrierBytes + secretBytes, "Byte"]
+
+(* decoding the data *)
+img = imagewithsecretdata; (* where imagewithsecretdata is an actual image *)
+secretData = Flatten[BitAnd[ImageData[img, "Byte"], 1]];
+messageLength = FromDigits[Take[secretData, 48], 2]
+secretData = Partition[Drop[secretData, 48], 8];
+ToExpression[
+ FromCharacterCode[
+  FromDigits[#, 2] & /@ Take[secretData, messageLength]]]

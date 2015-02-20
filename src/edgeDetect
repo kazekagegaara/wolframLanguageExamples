@@ -1,0 +1,2 @@
+i = someImage; (*where someImage is an actual image, simply drag and drop the image in the notebook *) 
+NestList[EdgeDetect, i, 10]
